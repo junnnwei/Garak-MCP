@@ -4,7 +4,7 @@ A lightweight MCP (Model Context Protocol) server for Garak.
 
 Example:
 
-
+https://github.com/user-attachments/assets/f6095d26-2b79-4ef7-a889-fd6be27bbbda
 
 
 ---
