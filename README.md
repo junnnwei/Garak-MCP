@@ -109,6 +109,7 @@ For **Cursor** users:
 ---
 ## Future Steps
 
+- [ ] Add support for Smithery AI: Docker and config
 - [ ] Improve Reporting
 - [ ] Test and validate OpenAI models (GPT-3.5, GPT-4)
 - [ ] Test and validate HuggingFace models
