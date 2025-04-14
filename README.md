@@ -44,7 +44,7 @@ ollama serve
 
 Clone this repository:
 ```bash
-git clone https://github.com/BIGdeadLock/OSV-MCP.git
+git clone https://github.com/BIGdeadLock/Garak-MCP.git
 cd src
 ```
 ---
@@ -56,7 +56,7 @@ For **Cursor** users:
 ```json
 {
   "mcpServers": {
-    "osv-mcp": {
+    "garak-mcp": {
       "command": "uv",
       "args": ["--directory", "path-to/Garak-MCP", "run", "garak-server"],
       "env": {}
@@ -107,3 +107,9 @@ For **Cursor** users:
   - Returns a list of vulnerabilities found
 
 ---
+## Future Steps
+
+- [ ] Improve Reporting
+- [ ] Test and validate OpenAI models (GPT-3.5, GPT-4)
+- [ ] Test and validate HuggingFace models
+- [ ] Test and validate local GGML models
