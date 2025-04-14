@@ -5,15 +5,12 @@ from src.config import ModelConfig
 import json
 import tempfile
 import os
-from fastapi import FastAPI, Response
-from fastapi.responses import StreamingResponse
-import asyncio
-import subprocess
-from typing import AsyncGenerator
 
-os.makedirs("../output", exist_ok=True) # Will be used to store the output of the attack
+
 
 REPORT_PREFIX = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "output")), "output")
+
+os.makedirs(REPORT_PREFIX, exist_ok=True)
 
 class GarakServer:
 
@@ -53,6 +50,12 @@ class GarakServer:
         temp_file.close()
         
         return temp_file.name
+    
+    def list_garak_probes(self):
+        """
+        List all available Garak attacks.
+        """
+        return get_terminal_commands_output(['garak', '--list_probes'])
 
     def run_attack(self, model_type: str, model_name: str, probe_name: str):
         """
@@ -76,8 +79,9 @@ class GarakServer:
                     '--probes', probe_name,
                     '--report_prefix', REPORT_PREFIX,
                     "--generations", "1",
-                    "--config", "fast"
-
+                    "--config", "fast",
+                    "--parallel_attempts", str(self.config.parallel_attempts),
+                    "-v"
                 ])
             finally:
                 # Clean up the temporary file
@@ -91,7 +95,9 @@ class GarakServer:
                 '--probes', probe_name,
                 '--report_prefix', REPORT_PREFIX,
                 "--generations", "1",
-                "--config", "fast"
+                "--config", "fast",
+                "--parallel_attempts", str(self.config.parallel_attempts),
+                "-v"
             ])
 
 # MCP Server
@@ -126,12 +132,12 @@ def list_models(model_type: str) -> list[str]:
 @mcp.tool()
 def list_garak_probes():
     """
-    List all available Garak probes.
+    List all available Garak attacks.
 
     Returns:
         list: A list of available probes / attacks.
     """
-    return get_terminal_commands_output(['garak', '--list_probes'])
+    return GarakServer().list_garak_probes()
 
 @mcp.tool()
 def get_report():
@@ -146,12 +152,12 @@ def get_report():
 @mcp.tool()
 def run_attack(model_type: str, model_name: str, probe_name: str):
     """
-    Run an attack with the given model and probe.
+    Run an attack with the given model and probe which is a Garak attack.
 
     Args:
         model_type (str): The type of model to use.
         model_name (str): The name of the model to use.
-        probe_name (str): The name of the probe to use.
+        probe_name (str): The name of the attack / probe to use.
 
     Returns:
         list: A list of vulnerabilities.

@@ -9,6 +9,7 @@ load_dotenv()
 
 class ModelConfig:
     def __init__(self):
+        self.parallel_attempts = 1  # Default value
         self.model_types = {
             "ollama": {
                 "type": "rest",
@@ -57,6 +58,16 @@ class ModelConfig:
         models = os.getenv("GGML_MODELS", "").split(",")
         return [model.strip() for model in models if model.strip()]
 
+    def set_parallel_attempts(self, attempts: int):
+        """
+        Set the number of parallel attempts for attacks.
+        
+        Args:
+            attempts (int): The number of parallel attempts to run
+        """
+        if attempts < 1:
+            raise ValueError("Number of parallel attempts must be at least 1")
+        self.parallel_attempts = attempts
 
     def get_rest_config(self, uri: str, model_name: str) -> Dict:
         """Get REST configuration for a given model name"""
