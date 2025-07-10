@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # Start MCP Server
-CMD ["uvicorn", "garak_server.main:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uv" "run", "garak-server"]
