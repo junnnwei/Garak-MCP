@@ -1,22 +1,22 @@
-# Base image
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies for uv and builds
+# Install system dependencies
 RUN apt-get update && apt-get install -y curl build-essential
 
-# Install uv and add it to PATH
-RUN curl -Ls https://astral.sh/uv/install.sh | bash && \
-    export PATH="/root/.cargo/bin:$PATH" && \
-    /root/.cargo/bin/uv pip install --no-cache-dir -r requirements.txt
+# Copy requirements first
+COPY requirements.txt .
 
-# Copy your code
+# Install uv + install Python deps using --system
+RUN curl -Ls https://astral.sh/uv/install.sh | bash && \
+    /root/.local/bin/uv pip install --system --no-cache-dir -r requirements.txt
+
+# Copy the rest of your app
 COPY . .
 
-# Expose MCP port
+# Expose default MCP port
 EXPOSE 5000
 
-# Set uv binary path explicitly in CMD
-CMD ["/root/.cargo/bin/uv", "run", "garak-server"]
+# Start the server using uv
+CMD ["/root/.local/bin/uv", "run", "garak-server"]
