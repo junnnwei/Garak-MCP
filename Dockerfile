@@ -1,21 +1,18 @@
-# Use a slim Python base image
+# Base image
 FROM python:3.11-slim
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies (for building some Python packages)
-RUN apt-get update && apt-get install -y build-essential
-
-# Copy and install dependencies using requirements.txt
+# Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirem  ents.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project into the container
+# Copy all source code
 COPY . .
 
-# Expose port (adjust if MCP listens on a different port)
+# MUST expose port 5000 for MCP Toolkit compatibility
 EXPOSE 5000
 
-# Change this to the actual entry point if not app.py
+# Set MCP server to listen on 0.0.0.0 so Docker networking works
 CMD ["python", "src/main.py"]
