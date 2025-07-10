@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 5000
 
 # Start MCP Server
-CMD ["uv" "run", "garak-server"]
+CMD ["uv", "run", "garak-server"]
