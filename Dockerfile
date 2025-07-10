@@ -14,5 +14,5 @@ COPY . .
 # MUST expose port 5000 for MCP Toolkit compatibility
 EXPOSE 5000
 
-# Set MCP server to listen on 0.0.0.0 so Docker networking works
-CMD ["python", "src/main.py"]
+# Start MCP Server
+CMD ["uvicorn", "garak_server.main:app", "--host", "0.0.0.0", "--port", "5000"]
